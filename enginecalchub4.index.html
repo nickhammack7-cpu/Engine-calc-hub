@@ -1,0 +1,296 @@
+<!DOCTYPE html><html>
+<head>
+  <title>EngineCalc Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <meta name="description" content="Free engine calculator tools including compression ratio, tire size speed, gear ratio, and RPM calculators for engine builders and performance tuning.">  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #0d0d0d;
+      color: #fff;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 30px 15px;
+      background: linear-gradient(135deg, #111, #1c1c1c);
+      border-bottom: 1px solid #222;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #ff9800;
+    }
+
+    .hero p {
+      color: #aaa;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 15px;
+    }
+
+    .tool-card {
+      background: #1a1a1a;
+      padding: 15px;
+      border-radius: 14px;
+      border: 1px solid #2a2a2a;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .tool-card:hover {
+      transform: scale(1.03);
+      border-color: #00e5ff;
+    }
+
+    .tabs {
+      display: flex;
+      overflow-x: auto;
+      background: #151515;
+      border-top: 1px solid #222;
+      border-bottom: 1px solid #222;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    .tab.active {
+      color: #00e5ff;
+      border-bottom: 2px solid #00e5ff;
+    }
+
+    .section {
+      display: none;
+      padding: 15px;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    h3 { color: #ff9800; }
+
+    .desc { color: #bbb; font-size: 13px; margin-bottom: 10px; }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #ff9800;
+      border: none;
+      font-weight: bold;
+    }
+
+    .result { margin-top: 10px; color: lime; }
+
+    .card {
+      background: #1a1a1a;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 1px solid #2a2a2a;
+    }
+
+    .footer {
+      padding: 15px;
+      font-size: 12px;
+      color: #777;
+      text-align: center;
+    }
+  </style></head><body><div class="hero">
+  <h1>⚙️ EngineCalc Hub</h1>
+  <p>
+    EngineCalc Hub is a set of tools for engine builders and DIY mechanics. Whether you're working on small projects or full builds, these calculators help with tuning, setup, and performance decisions.
+  </p>
+</div><div class="tool-grid">
+  <div class="tool-card" onclick="openTab('engine')">
+    <h3>🧱 Engine Geometry</h3>
+    <p>Piston position and deck clearance</p>
+  </div>  <div class="tool-card" onclick="openTab('extras')">
+    <h3>📊 Compression</h3>
+    <p>Advanced compression calculator</p>
+  </div>  <div class="tool-card" onclick="openTab('gear')">
+    <h3>⚙️ Gear Ratio</h3>
+    <p>Speed vs gearing calculator</p>
+  </div>  <div class="tool-card" onclick="openTab('speed')">
+    <h3>🛞 Tire Speed</h3>
+    <p>RPM to MPH with tire size</p>
+  </div>  <div class="tool-card" onclick="openTab('carb')">
+    <h3>🔥 Carb Jet</h3>
+    <p>Jetting estimation tool</p>
+  </div>  <div class="tool-card" onclick="openTab('extras')">
+    <h3>🧠 Engine Tools</h3>
+    <p>Piston speed + more</p>
+  </div>
+</div><div class="tabs">
+  <div class="tab active" onclick="openTab('engine', this)">Engine</div>
+  <div class="tab" onclick="openTab('carb', this)">Carb</div>
+  <div class="tab" onclick="openTab('gear', this)">Gear</div>
+  <div class="tab" onclick="openTab('speed', this)">Speed</div>
+  <div class="tab" onclick="openTab('extras', this)">More</div>
+</div><div id="engine" class="section active">
+  <h3>Engine Geometry</h3>
+  <div class="desc">Calculate piston clearance and deck setup.</div>  <div class="card"><strong>Why it matters:</strong><br>Proper deck clearance affects compression, efficiency, and piston safety.</div>  <input id="stroke" placeholder="Stroke (inches)">
+  <input id="rod" placeholder="Rod Length (inches)">
+  <input id="deck" placeholder="Deck Height (inches)">
+  <input id="piston" placeholder="Piston Height (inches)"><button onclick="engineCalc()">Calculate</button>
+
+  <div class="result" id="engineResult"></div>
+</div><div id="carb" class="section">
+  <h3>Carb Jet</h3>  <div class="card"><strong>Why it matters:</strong><br>Incorrect jetting can cause poor performance or engine damage.</div>  <input id="cc" placeholder="Engine CC">
+  <input id="rpm" placeholder="RPM">
+  <input id="cyl" placeholder="Cylinders"><button onclick="carbCalc()">Calculate</button>
+
+  <div class="result" id="carbResult"></div>
+</div><div id="gear" class="section">
+  <h3>Gear Ratio</h3>  <div class="card"><strong>Why it matters:</strong><br>Gear ratio determines acceleration vs top speed.</div>  <input id="grpm" placeholder="RPM">
+  <input id="tire" placeholder="Tire Diameter (inches)">
+  <input id="ratio" placeholder="Gear Ratio"><button onclick="gearCalc()">Calculate</button>
+
+  <div class="result" id="gearResult"></div>
+</div><div id="speed" class="section">
+  <h3>Top Speed</h3>  <div class="card"><strong>Why it matters:</strong><br>Estimates real-world speed based on setup and power.</div>  <input id="hp" placeholder="Horsepower">
+  <input id="weight" placeholder="Vehicle Weight">
+  <input id="ts_tire" placeholder="Tire Size (inches)">
+  <input id="ts_ratio" placeholder="Gear Ratio">
+  <input id="ts_rpm" placeholder="RPM"><button onclick="speedCalc()">Calculate</button>
+
+  <div class="result" id="speedResult"></div>
+</div><div id="extras" class="section">  <div class="card">
+    <h4>📊 Pro Compression Ratio</h4>
+    <div><strong>Why it matters:</strong> Determines fuel requirements and engine efficiency.</div><input id="bore" placeholder="Bore (inches)">
+<input id="stroke_cr" placeholder="Stroke (inches)">
+<input id="chamber" placeholder="Chamber CC">
+<input id="piston_cc" placeholder="Piston CC">
+<input id="deck_clear" placeholder="Deck Clearance (inches)">
+<input id="gasket_thick" placeholder="Gasket Thickness (inches)">
+<input id="gasket_bore" placeholder="Gasket Bore (inches)">
+
+<button onclick="calcCompressionPro()">Calculate</button>
+<div class="result" id="crResult"></div>
+
+  </div>  <div class="card">
+    <h4>🛞 Tire Speed</h4>
+    <div><strong>Why it matters:</strong> Converts RPM into actual vehicle speed.</div><input id="ts_diameter" placeholder="Tire Diameter (inches)">
+<input id="ts_rpm2" placeholder="RPM">
+<input id="ts_ratio2" placeholder="Gear Ratio">
+
+<button onclick="tireSpeedCalc()">Calculate</button>
+<div class="result" id="tireResult"></div>
+
+  </div>  <div class="card">
+    <h4>🔥 Piston Speed</h4>
+    <div><strong>Why it matters:</strong> High piston speed can cause engine failure.</div><input id="ps_stroke" placeholder="Stroke (inches)">
+<input id="ps_rpm" placeholder="RPM">
+
+<button onclick="pistonSpeed()">Calculate</button>
+<div class="result" id="psResult"></div>
+
+  </div></div><div class="footer">
+  EngineCalc Hub – Free engine calculator tools for performance builds.
+</div><script>
+function openTab(tab, el) {
+  // Hide all sections
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+
+  // Show selected section
+  document.getElementById(tab).classList.add("active");
+
+  // Handle tab highlighting safely
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+
+  // If clicked from tab bar
+  if (el) {
+    el.classList.add("active");
+  } else {
+    // If clicked from card, auto-highlight correct tab
+    document.querySelectorAll(".tab").forEach(t => {
+      if (t.textContent.toLowerCase().includes(tab)) {
+        t.classList.add("active");
+      }
+    });
+  }
+}
+
+function safe(val) {
+  return parseFloat(val) || 0;
+}
+
+function engineCalc() {
+  let stroke = safe(document.getElementById("stroke").value);
+  let rod = safe(document.getElementById("rod").value);
+  let deck = safe(document.getElementById("deck").value);
+  let piston = safe(document.getElementById("piston").value);
+
+  let result = deck - (rod + piston + stroke/2);
+  engineResult.innerHTML = isNaN(result) ? "⚠️ Enter valid numbers" : result.toFixed(4);
+}
+
+function carbCalc() {
+  let result = ((safe(cc.value) * safe(rpm.value))/(safe(cyl.value)*3456)*2.2);
+  carbResult.innerHTML = isNaN(result) ? "⚠️ Enter valid numbers" : result.toFixed(1);
+}
+
+function gearCalc() {
+  let result = ((safe(grpm.value) * safe(tire.value))/(safe(ratio.value)*336));
+  gearResult.innerHTML = isNaN(result) ? "⚠️ Enter valid numbers" : result.toFixed(2)+" MPH";
+}
+
+function speedCalc() {
+  let base = (safe(ts_rpm.value) * safe(ts_tire.value))/(safe(ts_ratio.value)*336);
+  let factor = Math.sqrt(safe(hp.value)/safe(weight.value))*100;
+  let result = base*factor/100;
+  speedResult.innerHTML = isNaN(result) ? "⚠️ Enter valid numbers" : result.toFixed(2)+" MPH";
+}
+
+function pistonSpeed() {
+  let result = ((2*safe(ps_stroke.value)*safe(ps_rpm.value))/12);
+  psResult.innerHTML = isNaN(result) ? "⚠️ Enter valid numbers" : result.toFixed(2)+" ft/min";
+}
+
+function calcCompressionPro() {
+  let boreArea = Math.PI * Math.pow(safe(bore.value)/2,2);
+  let gasketArea = Math.PI * Math.pow(safe(gasket_bore.value)/2,2);
+
+  let swept = boreArea * safe(stroke_cr.value);
+  let deckVol = boreArea * safe(deck_clear.value);
+  let gasketVol = gasketArea * safe(gasket_thick.value);
+
+  let chamberCI = safe(chamber.value) * 0.061;
+  let pistonCI = safe(piston_cc.value) * 0.061;
+
+  let clearance = chamberCI + pistonCI + deckVol + gasketVol;
+  let comp = (swept + clearance) / clearance;
+
+  let note = comp > 11 ? "⚠️ Race fuel likely" : comp > 10 ? "⚠️ Premium recommended" : "✅ Pump gas safe";
+
+  crResult.innerHTML = isNaN(comp) ? "⚠️ Enter valid numbers" : comp.toFixed(2)+":1<br>"+note;
+}
+
+function tireSpeedCalc() {
+  let circ = Math.PI * safe(ts_diameter.value);
+  let mph = (safe(ts_rpm2.value) * circ)/(safe(ts_ratio2.value)*1056);
+
+  let note = mph > 90 ? "⚠️ Very high speed" : mph > 60 ? "⚠️ Moderate-high speed" : "✅ Good torque setup";
+
+  tireResult.innerHTML = isNaN(mph) ? "⚠️ Enter valid numbers" : mph.toFixed(2)+" MPH<br>"+(mph*1.609).toFixed(2)+" KPH<br>"+note;
+}
+</script></body>
+</html>
